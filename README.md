@@ -1,4 +1,5 @@
 # MySQL-Assignments
+Week 7- 12 MySQL Assignments
 
 In these exercises, you will:
 ·	Use MySQL Workbench to create a schema and user.
