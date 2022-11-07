@@ -27,19 +27,20 @@ public class ProjectDao extends DaoBase {
 		// @formatter:off
 		String sql = ""
 			+ "INSERT INTO " + PROJECT_TABLE + " "	
-			+"(project_name, estimated_hours, actual_hours, difficulty, notes)"
+			+"(project_name, estimated_hours, actual_hours, difficulty, notes) "
 			+ "VALUES "
 			+"(?, ?, ?, ?, ?,)";
 		// @formatter:on
-		
+		 //set parameters to execute the returns on the tables. 
 		try(Connection conn = DbConnection.getConnection()) {
 			startTransaction(conn);
+			
 			try(PreparedStatement stmt = conn.prepareStatement(sql)) {
 				setParameter(stmt, 1, project.getProjectName(), String.class);
 				setParameter(stmt, 2, project.getEstimatedHours(), BigDecimal.class);
 				setParameter(stmt, 3, project.getActualHours(), BigDecimal.class);
 				setParameter(stmt, 4, project.getDifficulty(), Integer.class);
-				setParameter(stmt, 5, project.getEstimatedHours(), String.class);
+				setParameter(stmt, 5, project.getNotes(), String.class);
 				
 				stmt.executeUpdate();
 				
