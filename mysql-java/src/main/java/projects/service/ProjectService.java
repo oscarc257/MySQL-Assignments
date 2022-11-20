@@ -38,6 +38,13 @@ public class ProjectService {
 		}
 		
 	}
+
+	public void deleteProject(Integer projectId) {
+		if(!projectDao.deleteProject(projectId)) {
+			throw new DbException("Project with ID=" + projectId + "does not excist.");
+		}
+		
+	}
 	
 	
 	
