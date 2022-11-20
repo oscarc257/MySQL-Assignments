@@ -66,7 +66,7 @@ public class ProjectDao extends DaoBase {
 		
 		}
 	}
-
+//Week 10
 // This method calls the project DAO to retrieve all project rows without accompanying details (materials, steps and categories).
 	// * returns a list of project records.
 	
@@ -104,7 +104,7 @@ public class ProjectDao extends DaoBase {
 	*/
 	
 	public Optional<Project> fetchProjectById(Integer projectId) {
-		String sql = "SELECT * FROM " + PROJECT_TABLE + "WHERE project_id = ?";
+		String sql = "SELECT * FROM " + PROJECT_TABLE + " WHERE project_id = ?";
 		
 		try(Connection conn = DbConnection.getConnection()) {
 			startTransaction(conn);
@@ -146,9 +146,9 @@ public class ProjectDao extends DaoBase {
 		throws SQLException {
 		
 		// @formatter:off
-		String sql = " "
+		String sql = ""
 				+ "SELECT c.* FROM " + CATEGORY_TABLE + " c "
-				+ "JOIN " + PROJECT_CATEGORY_TABLE + "pc USING (category_id) "
+				+ "JOIN " + PROJECT_CATEGORY_TABLE + " pc USING (category_id) "
 				+ "WHERE project_id = ?";
 		
 		//@formatter:on
@@ -212,7 +212,7 @@ public class ProjectDao extends DaoBase {
 	}
 
 	// Week 11
-	
+	//Method is created to provide updates on current selected project and make changes to rows in tables on SQL. 
 	public boolean modifyProjectDetails(Project project) {
 		
 		// @formatter:off
@@ -220,7 +220,7 @@ public class ProjectDao extends DaoBase {
 				+"UPDATE " + PROJECT_TABLE + " SET "
 				+"project_name = ?, "
 				+"estimated_hours = ?, "
-				+"actual_hours = ? "
+				+"actual_hours = ?, "
 				+"difficulty = ?, "
 				+"notes = ? "
 				+"WHERE project_id = ?";
@@ -250,5 +250,34 @@ public class ProjectDao extends DaoBase {
 		catch(SQLException e) {
 			throw new DbException(e);
 		}
-	}	
+	}
+
+	//Week 11 
+	//Method created to modify delete statement for sql. Created a place holder for WHERE as well for the return statement. 
+	
+	public boolean deleteProject(Integer projectId) {
+		String sql = "DELETE FROM " + PROJECT_TABLE + " WHERE project_id = ?";
+		
+		try(Connection conn = DbConnection.getConnection()) {
+			startTransaction(conn);
+			
+			try(PreparedStatement stmt = conn.prepareStatement(sql)) {
+				setParameter(stmt, 1, projectId, Integer.class);
+				
+				boolean deleted = stmt.executeUpdate() == 1;
+				
+				commitTransaction(conn);
+				return deleted;
+			}
+			catch(Exception e) {
+				rollbackTransaction(conn);
+				throw new DbException(e);
+			}
+		}
+		catch(SQLException e) {
+			throw new DbException(e);
+		}
+	}
+			
 }	
+
